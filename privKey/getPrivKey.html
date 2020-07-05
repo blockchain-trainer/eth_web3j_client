@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<title>Solidity Client</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script
+	src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"
+	integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk="
+	crossorigin="anonymous"></script>
+
+<script src="ethereumjs-all-2018-1-17.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+	crossorigin="anonymous"></script>
+<body>
+
+	<!-- !PAGE CONTENT! -->
+	<div class="w3-content" style="max-width: 1500px">
+
+		<!-- Header -->
+		<header class="w3-panel w3-center" style="padding: 70px 16px">			
+			<h1>Show Priv Key</h1>
+
+<p>
+			<button id="imageDrop"
+				onclick="document.getElementById('uploadImage').click()"
+				title="Click or Drag Image">Keystore file</button>
+
+			<input id="uploadImage" class="buttonStyled" type="file" />
+		</p>
+<input type="password" class='inputStyle' id="password" value=""
+			placeholder='keystore password' style="width: 200px;" />
+<button class="buttonStyled" id="unlock"
+			style="height: 42px; padding: 12px;" onclick="decrypt();">Decrypt
+			keystore</button>
+		</header>
+		<div id= 'bal' >&nbsp;</div>
+		<!-- End Page Content -->
+	</div>
+	<footer
+		class="w3-container w3-padding-64 w3-light-grey w3-center w3-large">		
+	</footer>
+	<!-- Footer -->
+</body>
+<script type="text/javascript">
+	  var web3 = new Web3(new Web3.providers.HttpProvider(
+			"https://kovan.infura.io/rtjlGyAwZ8Vi5KebmL8E"));    
+			// var web3js = new Web3(new Web3.providers.HttpProvider(
+			//"http://localhost:7545"));	   	
+
+	
+	
+	
+   document.getElementById('uploadImage').addEventListener('change',
+			readSingleFile, false); 
+
+	var keyStore;
+	function readSingleFile(e) {
+		var file = e.target.files[0];
+		if (!file) {
+			return;
+		}
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			
+			keyStore = e.target.result;
+			keyStore = keyStore.replace("Crypto", "crypto");
+		};
+		reader.readAsText(file);
+	}
+
+	function decrypt() {
+
+		var dec = web3.eth.accounts.wallet.decrypt([ keyStore ], $('#password')
+				.val());
+		shortPrivateKey = dec[0].privateKey.substring(2, dec[0].privateKey.length);
+		alert(shortPrivateKey);
+		account = dec[0].address;		
+		$('#close').click();
+		
+		
+	}
+	
+	
+	
+	
+
+
+
+</script>
+</html>
